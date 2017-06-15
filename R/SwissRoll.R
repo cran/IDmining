@@ -2,9 +2,9 @@
 #'
 #' Generates random points on the Swiss Roll manifold.
 #' @usage SwissRoll(N=10000)
-#' @param N The number of points to be generated.
-#' @return A \eqn{N \times 3}{N x 3} data frame containing the
-#' coordinates of the Swiss roll embedded in \eqn{\rm I\!R^3}{R^3}.
+#' @param N The number of points to be generated (by default: \code{N = 10000}).
+#' @return A \eqn{N \times 3}{N x 3} \code{data.frame} containing the
+#' coordinates of the Swiss roll data points embedded in \eqn{\rm I\!R^3}{R^3}.
 #' @references J. A. Lee and M. Verleysen (2007). Nonlinear Dimensionality Reduction, Springer, New York.
 #' @examples
 #' N <- 1000
@@ -17,12 +17,11 @@ SwissRoll <- function(N=10000) {
 
   x1 <- runif(N,min=-1,max=1)
   x2 <- runif(N,min=-1,max=1)
-  a<-sqrt(2+2*x1)*cos(2*pi*sqrt(2+2*x1))
-  b<-sqrt(2+2*x1)*sin(2*pi*sqrt(2+2*x1))
-  z<-2*x2
+  x <- sqrt(2+2*x1)*cos(2*pi*sqrt(2+2*x1))
+  y <- sqrt(2+2*x1)*sin(2*pi*sqrt(2+2*x1))
+  z <- 2*x2
 
-  dataset <- as.data.frame(cbind(a,b,z))
-  names(dataset) <- c("x","y","z")
+  dataset <- data.frame(x,y,z)
 
   return(dataset)
 }

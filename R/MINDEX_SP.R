@@ -2,21 +2,21 @@
 #'
 #' Computes the multipoint Morisita index for spatial patterns (i.e. 2-dimensional patterns).
 #' @usage MINDEX_SP(X, scaleQ=1:5, mMin=2, mMax=5, Wlim_x=NULL, Wlim_y=NULL)
-#' @param X A \eqn{N \times 2}{N x 2} matrix or data frame containing the \eqn{X} and \eqn{Y}
+#' @param X A \eqn{N \times 2}{N x 2} \code{matrix}, \code{data.frame} or \code{data.table} containing the \eqn{X} and \eqn{Y}
 #'   coordinates of \eqn{N} data points. The \eqn{X} coordinates must be given in the first column
 #'   and the \eqn{Y} coordinates in the second column.
 #' @param scaleQ  Either a single value or a vector. It contains the value(s) of \eqn{Q^{(1/2)}}{Q^(1/2)}
 #'  chosen by the user where \eqn{Q} is the number of cells (or quadrats) of
-#'  the \eqn{2D} grid (by default: \code{scaleQ} = \eqn{1:5}).
-#' @param mMin The minimum value of \eqn{m} (by default: \code{mMin} = \eqn{2}).
-#' @param mMax The maximum value of \eqn{m} (by default: \code{mMax} = \eqn{5}).
+#'  the \eqn{2D} grid (by default: \code{scaleQ = 1:5}).
+#' @param mMin The minimum value of \eqn{m} (by default: \code{mMin = 2}).
+#' @param mMax The maximum value of \eqn{m} (by default: \code{mMax = 5}).
 #' @param Wlim_x A vector controlling the spatial extent of the \eqn{2D} gird along the
 #'  \eqn{X} axis. It consists of two real values, i.e. \code{Wlim_x <- c(a,b)} where
 #'  \eqn{b > a} (by default: \code{Wlim_x <- c(min(X[,1]),max(X[,1]))}).
 #' @param Wlim_y A vector controlling the spatial extent of the \eqn{2D} gird along the
 #'  \eqn{Y} axis. It consists of two real values, i.e. \code{Wlim_y <- c(a,b)} where
 #'  \eqn{b > a} (by default: \code{Wlim_y <- c(min(X[,2]),max(X[,2]))}).
-#' @return A data frame containing the value of the m-Morisita index for each value of
+#' @return A \code{data.frame} containing the value of the m-Morisita index for each value of
 #' \eqn{\delta}{delta} and \eqn{m}.
 #' @details
 #' \enumerate{
@@ -76,13 +76,13 @@
 #' mMI_l <- MINDEX_SP(sim_dat[,c(1,2)], scaleQ, m, 5, xlim_l, ylim_l)
 #' mMI_s <- MINDEX_SP(sim_dat[,c(1,2)], scaleQ, m, 5, xlim_s, ylim_s)
 #' }
-#' @import dplyr
+#' @import data.table
 #' @importFrom stats var
 #' @export
 MINDEX_SP <- function(X, scaleQ=1:5, mMin=2, mMax=5, Wlim_x=NULL, Wlim_y=NULL){
 
-  if (!is.matrix(X) & !is.data.frame(X) | ncol(X)!=2) {
-    stop('X must be a matrix or a data frame with two columns.')
+  if (!is.matrix(X) & !is.data.frame(X) & !is.data.table(X) | ncol(X)!=2) {
+    stop('X must be a matrix, a data.frame or a data.table with two columns.')
   }
   if (ncol(X)!=2 | nrow(X)<2){
     stop('The X and Y coordinates must be passed on to the function (no more
@@ -128,7 +128,7 @@ MINDEX_SP <- function(X, scaleQ=1:5, mMin=2, mMax=5, Wlim_x=NULL, Wlim_y=NULL){
                         nrow=nrow(X)),VD)
   }
 
-  P_VD <- as.data.frame(apply(X_VD, MARGIN = 2,
+  P_VD <- as.data.table(apply(X_VD, MARGIN = 2,
                         FUN = function(x) (x - min(x))/diff(range(x))))
 
   P  <- P_VD[-(nrow(P_VD):(nrow(P_VD)-1)),]
@@ -137,29 +137,29 @@ MINDEX_SP <- function(X, scaleQ=1:5, mMin=2, mMax=5, Wlim_x=NULL, Wlim_y=NULL){
   N <- nrow(P)                 # number of data points
   E <- ncol(P)                 # number of variables
 
-  delta <- rev(sqrt((diff(Wlim_x)/scaleQ)^2   # computation of the
-                   +(diff(Wlim_y)/scaleQ)^2)) # values of delta
+  delta <- sqrt((diff(Wlim_x)/scaleQ)^2  # computation of the
+               +(diff(Wlim_y)/scaleQ)^2) # values of delta
 
-  Q_ni  <- vector("list",length(scaleQ))
-  Q_nbr <- vector("numeric",length(scaleQ))
+  sc_nbr <- length(scaleQ)
+  Q_ni  <- vector("list",sc_nbr)
+  Q_nbr <- vector("numeric",sc_nbr)
 
-  index<-1
+  index    <- sc_nbr
   grp_cols <- names(P)
-  dots <- lapply(grp_cols, as.symbol)
   for (nQ in rev(scaleQ)){
     r <- 1/nQ
-    Q_ni[[index]] <- (floor(P/r)%>%group_by_(.dots=dots)%>%summarise(count = n()))$count
+    Q_ni[[index]] <- floor(P/r)[,list(count=.N),by=grp_cols]$count
     if (max(Q_ni[[index]])<= (mMax-1)) {
       stop('mMax is too large or there are not enough points.')
     }
     Q_nbr[index] <- nQ^E  # number of quadrats for each scale
-    index <- index+1
+    index <- index-1
   }
 
   mMi <- data.frame(Delta=delta)
 
   for (j in mMin:mMax) {
-    for (i in 1:length(scaleQ)) {
+    for (i in 1:sc_nbr) {
       ni <- Q_ni[[i]]
       Q  <- Q_nbr[i]
       nMi <- 1
@@ -173,5 +173,5 @@ MINDEX_SP <- function(X, scaleQ=1:5, mMin=2, mMax=5, Wlim_x=NULL, Wlim_y=NULL){
     colnames(mMi)[j-mMin+2]<- paste("m",j,sep="")
   }
 
-  return(mMi %>% arrange(-row_number()))
+  return(mMi)
 }

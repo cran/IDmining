@@ -7,11 +7,11 @@
 SwissRoll(N=10000)
 }
 \arguments{
-\item{N}{The number of points to be generated.}
+\item{N}{The number of points to be generated (by default: \code{N = 10000}).}
 }
 \value{
-A \eqn{N \times 3}{N x 3} data frame containing the
-coordinates of the Swiss roll embedded in \eqn{\rm I\!R^3}{R^3}.
+A \eqn{N \times 3}{N x 3} \code{data.frame} containing the
+coordinates of the Swiss roll data points embedded in \eqn{\rm I\!R^3}{R^3}.
 }
 \description{
 Generates random points on the Swiss Roll manifold.
@@ -23,4 +23,3 @@ sim_dat <- SwissRoll(N)
 \references{
 J. A. Lee and M. Verleysen (2007). Nonlinear Dimensionality Reduction, Springer, New York.
 }
-

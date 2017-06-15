@@ -3,19 +3,19 @@
 #' Estimates Rényi's generalized dimensions (or Rényi's dimensions of \eqn{q^{th}}{qth} order). It is
 #' mainly for \eqn{q=2}{q=2} that the result is used as an estimate of the intrinsic dimension of data.
 #' @usage RenDim(X, scaleQ = 1:5, qMin = 2, qMax = 2)
-#' @param X A \eqn{N \times E}{N x E} matrix or data frame where \eqn{N} is the number
+#' @param X A \eqn{N \times E}{N x E} \code{matrix}, \code{data.frame} or \code{data.table} where \eqn{N} is the number
 #' of data points and \eqn{E} is the number of variables (or features). The values of \code{X}
 #' are rescaled to the \eqn{[0,1]} interval by the function.
 #' @param scaleQ  Either a single value or a vector. It contains the value(s) of \eqn{l^{(-1)}}{l^(-1)}
-#' chosen by the user (by default: \code{scaleQ} = \eqn{1:5}).
-#' @param qMin The minimum value of \eqn{q} (by default: \code{qMin} = \eqn{2}).
-#' @param qMax The maximum value of \eqn{q} (by default: \code{qMax} = \eqn{2}).
+#' chosen by the user (by default: \code{scaleQ = 1:5}).
+#' @param qMin The minimum value of \eqn{q} (by default: \code{qMin = 2}).
+#' @param qMax The maximum value of \eqn{q} (by default: \code{qMax = 2}).
 #' @return A list of two elements:
 #'  \enumerate{
-#'   \item a data frame containing the value of Rényi's information of \eqn{q^{th}}{qth} order
+#'   \item a \code{data.frame} containing the value of Rényi's information of \eqn{q^{th}}{qth} order
 #'   (computed using the natural logarithm) for each value of \eqn{\ln (\delta)}{ln(delta)}
 #'   and \eqn{q}. The values of \eqn{\ln (\delta)}{ln(delta)} are provided with regard to the \eqn{[0,1]} interval.
-#'   \item a data frame containing the value of \eqn{D_q}{Dq} for each value of \eqn{q}.
+#'   \item a \code{data.frame} containing the value of \eqn{D_q}{Dq} for each value of \eqn{q}.
 #' }
 #' @details
 #' \enumerate{
@@ -39,7 +39,7 @@
 #' E. P. M. De Sousa, C. Traina Jr., A. J. M. Traina, L. Wu and C. Faloutsos (2007). A fast and
 #' effective method to find correlations among attributes in databases,
 #' \href{http://link.springer.com/article/10.1007/s10618-006-0056-4}{Data Mining and
-#' Knowledge Discovery, 14(3):367-407}.
+#' Knowledge Discovery 14(3):367-407}.
 #'
 #'
 #' J. Golay and M. Kanevski (2015). A new estimator of intrinsic dimension
@@ -48,7 +48,7 @@
 #'
 #' H. Hentschel and I. Procaccia (1983). The infinite number of generalized
 #' dimensions of fractals and strange attractors,
-#' \href{http://www.sciencedirect.com/science/article/pii/016727898390235X}{Physica D, 8(3):435-444}.
+#' \href{http://www.sciencedirect.com/science/article/pii/016727898390235X}{Physica D 8(3):435-444}.
 #' @examples
 #' N <- 1000
 #' sim_dat <- SwissRoll(N)
@@ -59,13 +59,13 @@
 #' qRI_ID <- RenDim(sim_dat[,c(1,2)], scaleQ[5:15])
 #'
 #' print(paste("The ID estimate is equal to",round(qRI_ID[[1]][1,2],2)))
-#' @import dplyr
+#' @import data.table
 #' @importFrom stats var lm coef
 #' @export
 RenDim <- function(X, scaleQ=1:5, qMin=2, qMax=2) {
 
-  if (!is.matrix(X) & !is.data.frame(X)) {
-    stop('X must be a matrix or a data frame.')
+  if (!is.matrix(X) & !is.data.frame(X) & !is.data.table(X)) {
+    stop('X must be a matrix, a data.frame or a data.table.')
   }
   if (nrow(X)<2){
     stop('At least two data points must be passed on to the function.')
@@ -80,30 +80,30 @@ RenDim <- function(X, scaleQ=1:5, qMin=2, qMax=2) {
     stop('mMin and mMax must be real numbers.')
   }
 
-  P  <- as.data.frame(apply(X, MARGIN = 2,
+  P  <- as.data.table(apply(X, MARGIN = 2,
                       FUN = function(x) (x - min(x))/diff(range(x))))
   N <- nrow(P)
   E <- ncol(P)
 
-  delta <- rev(sqrt((1/scaleQ)^2 * E))
+  delta   <- sqrt((1/scaleQ)^2 * E)
   P[P==1] <- 1-0.5/max(scaleQ)
 
-  Q_ni  <- vector("list",length(scaleQ))
+  sc_nbr <- length(scaleQ)
+  Q_ni  <- vector("list",sc_nbr)
 
-  index<-1
+  index    <- sc_nbr
   grp_cols <- names(P)
-  dots <- lapply(grp_cols, as.symbol)
   for (nQ in rev(scaleQ)){
     r <- 1/nQ
-    Q_ni[[index]] <- (floor(P/r)%>%group_by_(.dots=dots)%>%summarise(count = n()))$count
-    index <- index+1
+    Q_ni[[index]] <- floor(P/r)[,list(count=.N),by=grp_cols]$count
+    index <- index-1
   }
 
   qRi <- data.frame(logDelta=log(delta))
 
   index <- 2
   for (j in qMin:qMax) {
-    for (i in 1:length(scaleQ)) {
+    for (i in 1:sc_nbr) {
       ni  <- Q_ni[[i]]
       pri <- ni/N
       if (j == 1){
@@ -124,8 +124,5 @@ RenDim <- function(X, scaleQ=1:5, qMin=2, qMax=2) {
     ID[i-1,2] <- -coef(lm(qRi[,i]~qRi[,1]))[2]
   }
 
-  return_list      <- vector("list",2)
-  return_list[[1]] <- ID
-  return_list[[2]] <- qRi %>% arrange(-row_number())
-  return(return_list)
+  return(list(ID,qRi))
 }

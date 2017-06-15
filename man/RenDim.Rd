@@ -7,24 +7,24 @@
 RenDim(X, scaleQ = 1:5, qMin = 2, qMax = 2)
 }
 \arguments{
-\item{X}{A \eqn{N \times E}{N x E} matrix or data frame where \eqn{N} is the number
+\item{X}{A \eqn{N \times E}{N x E} \code{matrix}, \code{data.frame} or \code{data.table} where \eqn{N} is the number
 of data points and \eqn{E} is the number of variables (or features). The values of \code{X}
 are rescaled to the \eqn{[0,1]} interval by the function.}
 
 \item{scaleQ}{Either a single value or a vector. It contains the value(s) of \eqn{l^{(-1)}}{l^(-1)}
-chosen by the user (by default: \code{scaleQ} = \eqn{1:5}).}
+chosen by the user (by default: \code{scaleQ = 1:5}).}
 
-\item{qMin}{The minimum value of \eqn{q} (by default: \code{qMin} = \eqn{2}).}
+\item{qMin}{The minimum value of \eqn{q} (by default: \code{qMin = 2}).}
 
-\item{qMax}{The maximum value of \eqn{q} (by default: \code{qMax} = \eqn{2}).}
+\item{qMax}{The maximum value of \eqn{q} (by default: \code{qMax = 2}).}
 }
 \value{
 A list of two elements:
  \enumerate{
-  \item a data frame containing the value of Rényi's information of \eqn{q^{th}}{qth} order
+  \item a \code{data.frame} containing the value of Rényi's information of \eqn{q^{th}}{qth} order
   (computed using the natural logarithm) for each value of \eqn{\ln (\delta)}{ln(delta)}
   and \eqn{q}. The values of \eqn{\ln (\delta)}{ln(delta)} are provided with regard to the \eqn{[0,1]} interval.
-  \item a data frame containing the value of \eqn{D_q}{Dq} for each value of \eqn{q}.
+  \item a \code{data.frame} containing the value of \eqn{D_q}{Dq} for each value of \eqn{q}.
 }
 }
 \description{
@@ -55,9 +55,6 @@ qRI_ID <- RenDim(sim_dat[,c(1,2)], scaleQ[5:15])
 
 print(paste("The ID estimate is equal to",round(qRI_ID[[1]][1,2],2)))
 }
-\author{
-Jean Golay \email{Jean.Golay@unil.ch}
-}
 \references{
 C. Traina Jr., A. J. M. Traina, L. Wu and C. Faloutsos (2000).
 \href{http://repository.cmu.edu/cgi/viewcontent.cgi?article=1572&context=compsci}{Fast feature
@@ -67,7 +64,7 @@ on Databases (SBBD 2000), João Pessoa (Brazil).
 E. P. M. De Sousa, C. Traina Jr., A. J. M. Traina, L. Wu and C. Faloutsos (2007). A fast and
 effective method to find correlations among attributes in databases,
 \href{http://link.springer.com/article/10.1007/s10618-006-0056-4}{Data Mining and
-Knowledge Discovery, 14(3):367-407}.
+Knowledge Discovery 14(3):367-407}.
 
 
 J. Golay and M. Kanevski (2015). A new estimator of intrinsic dimension
@@ -76,6 +73,8 @@ based on the multipoint Morisita index,
 
 H. Hentschel and I. Procaccia (1983). The infinite number of generalized
 dimensions of fractals and strange attractors,
-\href{http://www.sciencedirect.com/science/article/pii/016727898390235X}{Physica D, 8(3):435-444}.
+\href{http://www.sciencedirect.com/science/article/pii/016727898390235X}{Physica D 8(3):435-444}.
 }
-
+\author{
+Jean Golay \email{Jean.Golay@unil.ch}
+}

@@ -7,19 +7,19 @@
 logMINDEX(X, scaleQ=1:5, mMin=2, mMax=2)
 }
 \arguments{
-\item{X}{A \eqn{N \times E}{N x E} matrix or data frame where \eqn{N} is the number
+\item{X}{A \eqn{N \times E}{N x E} \code{matrix}, \code{data.frame} or \code{data.table} where \eqn{N} is the number
 of data points and \eqn{E} is the number of variables (or features). The values of \code{X}
 are rescaled to the \eqn{[0,1]} interval by the function.}
 
 \item{scaleQ}{Either a single value or a vector. It contains the value(s) of \eqn{l^{(-1)}}{l^(-1)}
-chosen by the user (by default: \code{scaleQ} = \eqn{1:5}).}
+chosen by the user (by default: \code{scaleQ = 1:5}).}
 
-\item{mMin}{The minimum value of \eqn{m} (by default: \code{mMin} = \eqn{2}).}
+\item{mMin}{The minimum value of \eqn{m} (by default: \code{mMin = 2}).}
 
-\item{mMax}{The maximum value of \eqn{m} (by default: \code{mMax} = \eqn{2}).}
+\item{mMax}{The maximum value of \eqn{m} (by default: \code{mMax = 2}).}
 }
 \value{
-A data frame containing the \eqn{\ln}{ln} value of the m-Morisita index for each value of
+A \code{data.frame} containing the \eqn{\ln}{ln} value of the m-Morisita index for each value of
 \eqn{\ln (\delta)}{ln(delta)} and \eqn{m}. Notice also that the values of
 \eqn{\ln (\delta)}{ln(delta)} are provided with regard to the \eqn{[0,1]} interval.
 }
@@ -58,12 +58,11 @@ plot(lnmMI[,1],lnmMI[,2],pch=19,col="black",xlab="",ylab="")
 title(xlab = expression(paste("log(",delta,")")), cex.lab = 1.5,line = 2.5)
 title(ylab = expression(paste("log(",I['2,'*delta],")")), cex.lab = 1.5,line = 2.5)
 }
-\author{
-Jean Golay \email{Jean.Golay@unil.ch}
-}
 \references{
 J. Golay and M. Kanevski (2015). A new estimator of intrinsic dimension
 based on the multipoint Morisita index,
 \href{http://www.sciencedirect.com/science/article/pii/S0031320315002320}{Pattern Recognition 48 (12):4070–4081}.
 }
-
+\author{
+Jean Golay \email{Jean.Golay@unil.ch}
+}

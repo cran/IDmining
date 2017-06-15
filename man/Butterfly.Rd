@@ -7,14 +7,14 @@
 Butterfly(N=10000)
 }
 \arguments{
-\item{N}{The number of points to be generated.}
+\item{N}{The number of points to be generated (by default: \code{N = 10000}).}
 }
 \value{
-A \eqn{N \times 9}{N x 9} data frame. The first eight columns are the input variables
-and the last one is the output (or target) variable.
+A \eqn{N \times 9}{N x 9} \code{data.frame}. The first eight columns are the input variables,
+and the last one is the output (or target) variable \eqn{Y}.
 }
 \description{
-Generates the butterfly data set with a given number of points.
+Generates a random simulation of the butterfly data set with a given number of points.
 }
 \examples{
 N <- 1000
@@ -33,11 +33,11 @@ axes3d(lwd=3,cex.axis=3)
 grid3d(c("x+","y-","z"),col="black",lwd=1)
 }
 }
+\references{
+J. Golay, M. Leuenberger and M. Kanevski (2016). Feature selection for regression problems based
+on the Morisita estimator of intrinsic dimension,
+\href{http://www.sciencedirect.com/science/article/pii/S0031320317301905}{Pattern Recognition 70:126–138}.
+}
 \author{
 Jean Golay \email{Jean.Golay@unil.ch}
 }
-\references{
-J. Golay, M. Leuenberger and M. Kanevski (2016). Feature Selection for Regression Problems Based
-on the Morisita Estimator of Intrinsic Dimension, \href{https://arxiv.org/abs/1602.00216}{arXiv:1602.00216}.
-}
-

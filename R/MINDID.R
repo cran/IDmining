@@ -2,18 +2,18 @@
 #'
 #' Estimates the intrinsic dimension of data using the Morisita estimator of intrinsic dimension.
 #' @usage MINDID(X, scaleQ=1:5, mMin=2, mMax=2)
-#' @param X A \eqn{N \times E}{N x E} matrix or data frame where \eqn{N} is the number
+#' @param X A \eqn{N \times E}{N x E} \code{matrix}, \code{data.frame} or \code{data.table} where \eqn{N} is the number
 #' of data points and \eqn{E} is the number of variables (or features). The values of \code{X}
 #' are rescaled to the \eqn{[0,1]} interval by the function.
 #' @param scaleQ  Either a single value or a vector. It contains the value(s) of \eqn{l^{(-1)}}{l^(-1)}
-#' chosen by the user (by default: \code{scaleQ} = \eqn{1:5}).
-#' @param mMin The minimum value of \eqn{m} (by default: \code{mMin} = \eqn{2}).
-#' @param mMax The maximum value of \eqn{m} (by default: \code{mMax} = \eqn{2}).
+#' chosen by the user (by default: \code{scaleQ = 1:5}).
+#' @param mMin The minimum value of \eqn{m} (by default: \code{mMin = 2}).
+#' @param mMax The maximum value of \eqn{m} (by default: \code{mMax = 2}).
 #' @return A list of two elements:
 #'  \enumerate{
-#'   \item a data frame containing the \eqn{\ln}{ln} value of the m-Morisita index for each value
+#'   \item a \code{data.frame} containing the \eqn{\ln}{ln} value of the m-Morisita index for each value
 #'   of \eqn{\ln (\delta)}{ln(delta)} and \eqn{m}. The values of \eqn{\ln (\delta)}{ln(delta)} are provided with regard to the \eqn{[0,1]} interval.
-#'   \item a data frame containing the values of \eqn{S_m}{Sm} and \eqn{M_m}{Mm} for each value of \eqn{m}.
+#'   \item a \code{data.frame} containing the values of \eqn{S_m}{Sm} and \eqn{M_m}{Mm} for each value of \eqn{m}.
 #' }
 #' @details
 #' \enumerate{
@@ -33,9 +33,9 @@
 #' based on the multipoint Morisita index,
 #' \href{http://www.sciencedirect.com/science/article/pii/S0031320315002320}{Pattern Recognition 48 (12):4070–4081}.
 #'
-#' J. Golay, M. Leuenberger and M. Kanevski (2016). Feature Selection for Regression Problems Based
-#' on the Morisita Estimator of Intrinsic Dimension,
-#' \href{https://arxiv.org/abs/1602.00216}{arXiv:1602.00216}.
+#' J. Golay, M. Leuenberger and M. Kanevski (2016). Feature selection for regression problems based
+#' on the Morisita estimator of intrinsic dimension,
+#' \href{http://www.sciencedirect.com/science/article/pii/S0031320317301905}{Pattern Recognition 70:126–138}.
 #'
 #' J. Golay and M. Kanevski (2016). Unsupervised Feature Selection Based on the Morisita Estimator
 #' of Intrinsic Dimension, \href{https://arxiv.org/abs/1608.05581}{arXiv:1608.05581}.
@@ -54,13 +54,13 @@
 #' mMI_ID <- MINDID(sim_dat, scaleQ[5:15])
 #'
 #' print(paste("The ID estimate is equal to",round(mMI_ID[[1]][1,3],2)))
-#' @import dplyr
+#' @import data.table
 #' @importFrom stats var lm coef
 #' @export
 MINDID <- function(X, scaleQ=1:5, mMin=2, mMax=2) {
 
-  if (!is.matrix(X) & !is.data.frame(X)) {
-    stop('X must be a matrix or a data frame.')
+  if (!is.matrix(X) & !is.data.frame(X) & !is.data.table(X)) {
+    stop('X must be a matrix, a data.frame or a data.table.')
   }
   if (nrow(X)<2){
     stop('At least two data points must be passed on to the function.')
@@ -77,34 +77,34 @@ MINDID <- function(X, scaleQ=1:5, mMin=2, mMax=2) {
           mMax must be equal to or greater than mMin.')
   }
 
-  P  <- as.data.frame(apply(X, MARGIN = 2,
+  P  <- as.data.table(apply(X, MARGIN = 2,
                       FUN = function(x) (x - min(x))/diff(range(x))))
   N <- nrow(P)
   E <- ncol(P)
 
-  delta <- rev(sqrt((1/scaleQ)^2 * E))
+  delta   <- sqrt((1/scaleQ)^2 * E)
   P[P==1] <- 1-0.5/max(scaleQ)
 
-  Q_ni  <- vector("list",length(scaleQ))
-  Q_nbr <- vector("numeric",length(scaleQ))
+  sc_nbr <- length(scaleQ)
+  Q_ni   <- vector("list",sc_nbr)
+  Q_nbr  <- vector("numeric",sc_nbr)
 
-  index<-1
+  index    <- sc_nbr
   grp_cols <- names(P)
-  dots <- lapply(grp_cols, as.symbol)
   for (nQ in rev(scaleQ)){
     r <- 1/nQ
-    Q_ni[[index]] <- (floor(P/r)%>%group_by_(.dots=dots)%>%summarise(count = n()))$count
+    Q_ni[[index]] <- floor(P/r)[,list(count=.N),by=grp_cols]$count
     if (max(Q_ni[[index]])<= (mMax-1)) {
       stop('mMax is too large or there are not enough points.')
     }
     Q_nbr[index] <- E*log(nQ)
-    index <- index+1
+    index <- index-1
   }
 
   logmMi <- data.frame(logDelta=log(delta))
 
   for (j in mMin:mMax) {
-    for (i in 1:length(scaleQ)) {
+    for (i in 1:sc_nbr) {
       ni <- Q_ni[[i]]
       Q  <- Q_nbr[i]
       nMi <- 1
@@ -128,8 +128,5 @@ MINDID <- function(X, scaleQ=1:5, mMin=2, mMax=2) {
     ID[i-1,3] <- E-(-coef(lm(logmMi[,i]~logmMi[,1]))[2]/(mMin+i-3))
   }
 
-  return_list      <- vector("list",2)
-  return_list[[1]] <- ID
-  return_list[[2]] <- logmMi %>% arrange(-row_number())
-  return(return_list)
+  return(list(ID,logmMi))
 }

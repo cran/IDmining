@@ -7,17 +7,17 @@
 MINDEX_SP(X, scaleQ=1:5, mMin=2, mMax=5, Wlim_x=NULL, Wlim_y=NULL)
 }
 \arguments{
-\item{X}{A \eqn{N \times 2}{N x 2} matrix or data frame containing the \eqn{X} and \eqn{Y}
+\item{X}{A \eqn{N \times 2}{N x 2} \code{matrix}, \code{data.frame} or \code{data.table} containing the \eqn{X} and \eqn{Y}
 coordinates of \eqn{N} data points. The \eqn{X} coordinates must be given in the first column
 and the \eqn{Y} coordinates in the second column.}
 
 \item{scaleQ}{Either a single value or a vector. It contains the value(s) of \eqn{Q^{(1/2)}}{Q^(1/2)}
 chosen by the user where \eqn{Q} is the number of cells (or quadrats) of
-the \eqn{2D} grid (by default: \code{scaleQ} = \eqn{1:5}).}
+the \eqn{2D} grid (by default: \code{scaleQ = 1:5}).}
 
-\item{mMin}{The minimum value of \eqn{m} (by default: \code{mMin} = \eqn{2}).}
+\item{mMin}{The minimum value of \eqn{m} (by default: \code{mMin = 2}).}
 
-\item{mMax}{The maximum value of \eqn{m} (by default: \code{mMax} = \eqn{5}).}
+\item{mMax}{The maximum value of \eqn{m} (by default: \code{mMax = 5}).}
 
 \item{Wlim_x}{A vector controlling the spatial extent of the \eqn{2D} gird along the
 \eqn{X} axis. It consists of two real values, i.e. \code{Wlim_x <- c(a,b)} where
@@ -28,7 +28,7 @@ the \eqn{2D} grid (by default: \code{scaleQ} = \eqn{1:5}).}
 \eqn{b > a} (by default: \code{Wlim_y <- c(min(X[,2]),max(X[,2]))}).}
 }
 \value{
-A data frame containing the value of the m-Morisita index for each value of
+A \code{data.frame} containing the value of the m-Morisita index for each value of
 \eqn{\delta}{delta} and \eqn{m}.
 }
 \description{
@@ -82,9 +82,6 @@ mMI_l <- MINDEX_SP(sim_dat[,c(1,2)], scaleQ, m, 5, xlim_l, ylim_l)
 mMI_s <- MINDEX_SP(sim_dat[,c(1,2)], scaleQ, m, 5, xlim_s, ylim_s)
 }
 }
-\author{
-Jean Golay \email{Jean.Golay@unil.ch}
-}
 \references{
 J. Golay, M. Kanevski, C. D. Vega Orozco and M. Leuenberger (2014).
 The multipoint Morisita index for the analysis of spatial patterns,
@@ -97,4 +94,6 @@ L. Telesca, M. Lovallo, J. Golay and M. Kanevski (2016). Comparing seismicity de
 by means of the joint use of Allan Factor and Morisita index,
 \href{http://link.springer.com/article/10.1007/s00477-015-1030-8}{Stochastic Environmental Research and Risk Assessment 30(1):77-90}.
 }
-
+\author{
+Jean Golay \email{Jean.Golay@unil.ch}
+}

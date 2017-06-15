@@ -2,14 +2,14 @@
 #'
 #' Computes the ln values of the multipoint Morisita index in 1, 2 or higher dimensional spaces.
 #' @usage logMINDEX(X, scaleQ=1:5, mMin=2, mMax=2)
-#' @param X A \eqn{N \times E}{N x E} matrix or data frame where \eqn{N} is the number
+#' @param X A \eqn{N \times E}{N x E} \code{matrix}, \code{data.frame} or \code{data.table} where \eqn{N} is the number
 #' of data points and \eqn{E} is the number of variables (or features). The values of \code{X}
 #' are rescaled to the \eqn{[0,1]} interval by the function.
 #' @param scaleQ  Either a single value or a vector. It contains the value(s) of \eqn{l^{(-1)}}{l^(-1)}
-#' chosen by the user (by default: \code{scaleQ} = \eqn{1:5}).
-#' @param mMin The minimum value of \eqn{m} (by default: \code{mMin} = \eqn{2}).
-#' @param mMax The maximum value of \eqn{m} (by default: \code{mMax} = \eqn{2}).
-#' @return A data frame containing the \eqn{\ln}{ln} value of the m-Morisita index for each value of
+#' chosen by the user (by default: \code{scaleQ = 1:5}).
+#' @param mMin The minimum value of \eqn{m} (by default: \code{mMin = 2}).
+#' @param mMax The maximum value of \eqn{m} (by default: \code{mMax = 2}).
+#' @return A \code{data.frame} containing the \eqn{\ln}{ln} value of the m-Morisita index for each value of
 #' \eqn{\ln (\delta)}{ln(delta)} and \eqn{m}. Notice also that the values of
 #' \eqn{\ln (\delta)}{ln(delta)} are provided with regard to the \eqn{[0,1]} interval.
 #' @details
@@ -46,13 +46,13 @@
 #' plot(lnmMI[,1],lnmMI[,2],pch=19,col="black",xlab="",ylab="")
 #' title(xlab = expression(paste("log(",delta,")")), cex.lab = 1.5,line = 2.5)
 #' title(ylab = expression(paste("log(",I['2,'*delta],")")), cex.lab = 1.5,line = 2.5)
-#' @import dplyr
+#' @import data.table
 #' @importFrom stats var
 #' @export
 logMINDEX <- function(X, scaleQ=1:5, mMin=2, mMax=2) {
 
-  if (!is.matrix(X) & !is.data.frame(X)) {
-    stop('X must be a matrix or a data frame.')
+  if (!is.matrix(X) & !is.data.frame(X) & !is.data.table(X)) {
+    stop('X must be a matrix, a data.frame or a data.table.')
   }
   if (nrow(X)<2){
     stop('At least two data points must be passed on to the function.')
@@ -70,34 +70,34 @@ logMINDEX <- function(X, scaleQ=1:5, mMin=2, mMax=2) {
           mMax must be equal to or greater than mMin.')
   }
 
-  P <- as.data.frame(apply(X, MARGIN = 2,
+  P <- as.data.table(apply(X, MARGIN = 2,
                      FUN = function(x) (x - min(x))/diff(range(x))))
   N <- nrow(P)
   E <- ncol(P)
 
-  delta <- rev(sqrt((1/scaleQ)^2 * E))
+  delta <- sqrt((1/scaleQ)^2 * E)
   P[P==1] <- 1-0.5/max(scaleQ)
 
-  Q_ni  <- vector("list",length(scaleQ))
-  Q_nbr <- vector("numeric",length(scaleQ))
+  sc_nbr <- length(scaleQ)
+  Q_ni   <- vector("list",sc_nbr)
+  Q_nbr  <- vector("numeric",sc_nbr)
 
-  index<-1
+  index    <- sc_nbr
   grp_cols <- names(P)
-  dots <- lapply(grp_cols, as.symbol)
   for (nQ in rev(scaleQ)){
     r <- 1/nQ
-    Q_ni[[index]] <- (floor(P/r)%>%group_by_(.dots=dots)%>%summarise(count = n()))$count
+    Q_ni[[index]] <- floor(P/r)[,list(count=.N),by=grp_cols]$count
     if (max(Q_ni[[index]])<= (mMax-1)) {
       stop('mMax is too large or there are not enough points.')
     }
     Q_nbr[index] <- E*log(nQ)
-    index <- index+1
+    index <- index-1
   }
 
   logmMi <- data.frame(logDelta=log(delta))
 
   for (j in mMin:mMax) {
-    for (i in 1:length(scaleQ)) {
+    for (i in 1:sc_nbr) {
       ni <- Q_ni[[i]]
       Q  <- Q_nbr[i]
       nMi <- 1
@@ -111,5 +111,5 @@ logMINDEX <- function(X, scaleQ=1:5, mMin=2, mMax=2) {
     colnames(logmMi)[j-mMin+2]<- paste("logm",j,sep="")
   }
 
-  return(logmMi %>% arrange(-row_number()))
+  return(logmMi)
 }
