@@ -17,8 +17,7 @@ coordinates of the Swiss roll data points embedded in \eqn{\rm I\!R^3}{R^3}.
 Generates random points on the Swiss Roll manifold.
 }
 \examples{
-N <- 1000
-sim_dat <- SwissRoll(N)
+sim_dat <- SwissRoll(1000)
 }
 \references{
 J. A. Lee and M. Verleysen (2007). Nonlinear Dimensionality Reduction, Springer, New York.

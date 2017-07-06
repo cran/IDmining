@@ -2,11 +2,11 @@
 #'
 #' Estimates Rényi's generalized dimensions (or Rényi's dimensions of \eqn{q^{th}}{qth} order). It is
 #' mainly for \eqn{q=2}{q=2} that the result is used as an estimate of the intrinsic dimension of data.
-#' @usage RenDim(X, scaleQ = 1:5, qMin = 2, qMax = 2)
+#' @usage RenDim(X, scaleQ=1:5, qMin=2, qMax=2)
 #' @param X A \eqn{N \times E}{N x E} \code{matrix}, \code{data.frame} or \code{data.table} where \eqn{N} is the number
-#' of data points and \eqn{E} is the number of variables (or features). The values of \code{X}
-#' are rescaled to the \eqn{[0,1]} interval by the function.
-#' @param scaleQ  Either a single value or a vector. It contains the value(s) of \eqn{l^{(-1)}}{l^(-1)}
+#' of data points and \eqn{E} is the number of variables (or features). Each variable
+#' is rescaled to the \eqn{[0,1]} interval by the function.
+#' @param scaleQ  Either a single value or a vector. It contains the value(s) of \eqn{\ell^{-1}}{l^(-1)}
 #' chosen by the user (by default: \code{scaleQ = 1:5}).
 #' @param qMin The minimum value of \eqn{q} (by default: \code{qMin = 2}).
 #' @param qMax The maximum value of \eqn{q} (by default: \code{qMax = 2}).
@@ -19,14 +19,14 @@
 #' }
 #' @details
 #' \enumerate{
-#' \item \eqn{\ell}{l} is the edge length of the grid cells (or quadrats). Since the data
+#' \item \eqn{\ell}{l} is the edge length of the grid cells (or quadrats). Since the variables
 #' (and consenquently the grid) are rescaled to the \eqn{[0,1]} interval, \eqn{\ell}{l} is equal
 #' to \eqn{1} for a grid consisting of only one cell.
-#' \item \eqn{\ell^{(-1)}}{l^(-1)} is the number of grid cells (or quadrats) along each axis of the
+#' \item \eqn{\ell^{-1}}{l^(-1)} is the number of grid cells (or quadrats) along each axis of the
 #' Euclidean space in which the data points are embedded.
-#' \item \eqn{\ell^{(-1)}}{l^(-1)} is equal to \eqn{Q^{(1/E)}}{Q^(1/E)} where \eqn{Q} is the number
+#' \item \eqn{\ell^{-1}}{l^(-1)} is equal to \eqn{Q^{(1/E)}}{Q^(1/E)} where \eqn{Q} is the number
 #' of grid cells and \eqn{E} is the number of variables (or features).
-#' \item \eqn{\ell^{(-1)}}{l^(-1)} is directly related to \eqn{\delta}{delta} (see References).
+#' \item \eqn{\ell^{-1}}{l^(-1)} is directly related to \eqn{\delta}{delta} (see References).
 #' \item \eqn{\delta}{delta} is the diagonal length of the grid cells.
 #' }
 #' @author Jean Golay \email{Jean.Golay@@unil.ch}
@@ -50,12 +50,10 @@
 #' dimensions of fractals and strange attractors,
 #' \href{http://www.sciencedirect.com/science/article/pii/016727898390235X}{Physica D 8(3):435-444}.
 #' @examples
-#' N <- 1000
-#' sim_dat <- SwissRoll(N)
+#' sim_dat <- SwissRoll(1000)
 #'
-#' m <- 2
-#' scaleQ <- seq(1,15,1) # It starts with a grid of 1^E cell (or quadrat).
-#'                       # It ends with a grid of 15^E cells (or quadrats).
+#' scaleQ <- 1:15 # It starts with a grid of 1^E cell (or quadrat).
+#'                # It ends with a grid of 15^E cells (or quadrats).
 #' qRI_ID <- RenDim(sim_dat[,c(1,2)], scaleQ[5:15])
 #'
 #' print(paste("The ID estimate is equal to",round(qRI_ID[[1]][1,2],2)))

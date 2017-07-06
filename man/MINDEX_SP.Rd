@@ -42,12 +42,11 @@ Computes the multipoint Morisita index for spatial patterns (i.e. 2-dimensional 
 }
 }
 \examples{
-N<-1000
-sim_dat <- SwissRoll(N)
+sim_dat <- SwissRoll(1000)
 
 m <- 2
-scaleQ <- seq(1,15,1) # It starts with a grid of 1^2 cell (or quadrat).
-                      # It ends with a grid of 15^2 cells (or quadrats).
+scaleQ <- 1:15 # It starts with a grid of 1^2 cell (or quadrat).
+               # It ends with a grid of 15^2 cells (or quadrats).
 mMI <- MINDEX_SP(sim_dat[,c(1,2)], scaleQ, m, 5)
 
 plot(mMI[,1],mMI[,2],pch=19,col="black",xlab="",ylab="")

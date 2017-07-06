@@ -17,8 +17,7 @@ and the last one is the output (or target) variable \eqn{Y}.
 Generates a random simulation of the butterfly data set with a given number of points.
 }
 \examples{
-N <- 1000
-bf <- Butterfly(N)
+bf <- Butterfly(1000)
 
 \dontrun{
 require(colorRamps)

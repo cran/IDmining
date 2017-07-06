@@ -37,12 +37,11 @@
 #' by means of the joint use of Allan Factor and Morisita index,
 #' \href{http://link.springer.com/article/10.1007/s00477-015-1030-8}{Stochastic Environmental Research and Risk Assessment 30(1):77-90}.
 #' @examples
-#' N<-1000
-#' sim_dat <- SwissRoll(N)
+#' sim_dat <- SwissRoll(1000)
 #'
 #' m <- 2
-#' scaleQ <- seq(1,15,1) # It starts with a grid of 1^2 cell (or quadrat).
-#'                       # It ends with a grid of 15^2 cells (or quadrats).
+#' scaleQ <- 1:15 # It starts with a grid of 1^2 cell (or quadrat).
+#'                # It ends with a grid of 15^2 cells (or quadrats).
 #' mMI <- MINDEX_SP(sim_dat[,c(1,2)], scaleQ, m, 5)
 #'
 #' plot(mMI[,1],mMI[,2],pch=19,col="black",xlab="",ylab="")

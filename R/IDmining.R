@@ -3,7 +3,7 @@
 #' based on the multipoint Morisita index,
 #' \href{http://www.sciencedirect.com/science/article/pii/S0031320315002320}{Pattern Recognition 48 (12):4070–4081}.
 #'
-#' J. Golay, M. Leuenberger and M. Kanevski (2016). Feature selection for regression problems based
+#' J. Golay, M. Leuenberger and M. Kanevski (2017). Feature selection for regression problems based
 #' on the Morisita estimator of intrinsic dimension,
 #' \href{http://www.sciencedirect.com/science/article/pii/S0031320317301905}{Pattern Recognition 70:126–138}.
 #'

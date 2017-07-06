@@ -10,8 +10,7 @@
 #' on the Morisita estimator of intrinsic dimension,
 #' \href{http://www.sciencedirect.com/science/article/pii/S0031320317301905}{Pattern Recognition 70:126–138}.
 #' @examples
-#' N <- 1000
-#' bf <- Butterfly(N)
+#' bf <- Butterfly(1000)
 #'
 #' \dontrun{
 #' require(colorRamps)
@@ -47,14 +46,12 @@ Butterfly <- function(N=10000) {
   }
 
   nhid <- 10
-  TV.P <- t(x_core)
-  tmpHTest <- inpweight %*% TV.P
-  biasMatrixTE <- matrix(rep(biashid,ncol(TV.P)),nrow=nhid,
-                         ncol = ncol(TV.P), byrow=F)
+  tmpHTest <- x_core %*% t(inpweight)
+  biasMatrixTE <- matrix(rep(biashid,nrow(x_core)),nrow=nrow(x_core),
+                         ncol=nhid,byrow=F)
   tmpHTest <- tmpHTest + biasMatrixTE
   HTest <- 1/(1 + exp(-1 * tmpHTest))
-  TY <- t(t(HTest) %*% outweight)
-  Y <- t(TY)
+  Y <- HTest %*% outweight
 
   J3 <- log(x_core[,1]+5,10)
   J4 <- x_core[,1]^2-x_core[,2]^2

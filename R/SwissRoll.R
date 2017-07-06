@@ -7,8 +7,7 @@
 #' coordinates of the Swiss roll data points embedded in \eqn{\rm I\!R^3}{R^3}.
 #' @references J. A. Lee and M. Verleysen (2007). Nonlinear Dimensionality Reduction, Springer, New York.
 #' @examples
-#' N <- 1000
-#' sim_dat <- SwissRoll(N)
+#' sim_dat <- SwissRoll(1000)
 #' @importFrom stats runif
 #' @export
 SwissRoll <- function(N=10000) {

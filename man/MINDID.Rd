@@ -8,10 +8,10 @@ MINDID(X, scaleQ=1:5, mMin=2, mMax=2)
 }
 \arguments{
 \item{X}{A \eqn{N \times E}{N x E} \code{matrix}, \code{data.frame} or \code{data.table} where \eqn{N} is the number
-of data points and \eqn{E} is the number of variables (or features). The values of \code{X}
-are rescaled to the \eqn{[0,1]} interval by the function.}
+of data points and \eqn{E} is the number of variables (or features). Each variable
+is rescaled to the \eqn{[0,1]} interval by the function.}
 
-\item{scaleQ}{Either a single value or a vector. It contains the value(s) of \eqn{l^{(-1)}}{l^(-1)}
+\item{scaleQ}{Either a single value or a vector. It contains the value(s) of \eqn{\ell^{-1}}{l^(-1)}
 chosen by the user (by default: \code{scaleQ = 1:5}).}
 
 \item{mMin}{The minimum value of \eqn{m} (by default: \code{mMin = 2}).}
@@ -31,24 +31,22 @@ Estimates the intrinsic dimension of data using the Morisita estimator of intrin
 }
 \details{
 \enumerate{
-\item \eqn{\ell}{l} is the edge length of the grid cells (or quadrats). Since the data
+\item \eqn{\ell}{l} is the edge length of the grid cells (or quadrats). Since the variables
 (and consenquently the grid) are rescaled to the \eqn{[0,1]} interval, \eqn{\ell}{l} is equal
 to \eqn{1} for a grid consisting of only one cell.
-\item \eqn{\ell^{(-1)}}{l^(-1)} is the number of grid cells (or quadrats) along each axis of the
+\item \eqn{\ell^{-1}}{l^(-1)} is the number of grid cells (or quadrats) along each axis of the
 Euclidean space in which the data points are embedded.
-\item \eqn{\ell^{(-1)}}{l^(-1)} is equal to \eqn{Q^{(1/E)}}{Q^(1/E)} where \eqn{Q} is the number
+\item \eqn{\ell^{-1}}{l^(-1)} is equal to \eqn{Q^{(1/E)}}{Q^(1/E)} where \eqn{Q} is the number
 of grid cells and \eqn{E} is the number of variables (or features).
-\item \eqn{\ell^{(-1)}}{l^(-1)} is directly related to \eqn{\delta}{delta} (see References).
+\item \eqn{\ell^{-1}}{l^(-1)} is directly related to \eqn{\delta}{delta} (see References).
 \item \eqn{\delta}{delta} is the diagonal length of the grid cells.
 }
 }
 \examples{
-N <- 1000
-sim_dat <- SwissRoll(N)
+sim_dat <- SwissRoll(1000)
 
-m <- 2
-scaleQ <- seq(1,15,1) # It starts with a grid of 1^E cell (or quadrat).
-                      # It ends with a grid of 15^E cells (or quadrats).
+scaleQ <- 1:15 # It starts with a grid of 1^E cell (or quadrat).
+               # It ends with a grid of 15^E cells (or quadrats).
 mMI_ID <- MINDID(sim_dat, scaleQ[5:15])
 
 print(paste("The ID estimate is equal to",round(mMI_ID[[1]][1,3],2)))
@@ -58,7 +56,7 @@ J. Golay and M. Kanevski (2015). A new estimator of intrinsic dimension
 based on the multipoint Morisita index,
 \href{http://www.sciencedirect.com/science/article/pii/S0031320315002320}{Pattern Recognition 48 (12):4070–4081}.
 
-J. Golay, M. Leuenberger and M. Kanevski (2016). Feature selection for regression problems based
+J. Golay, M. Leuenberger and M. Kanevski (2017). Feature selection for regression problems based
 on the Morisita estimator of intrinsic dimension,
 \href{http://www.sciencedirect.com/science/article/pii/S0031320317301905}{Pattern Recognition 70:126–138}.
 
