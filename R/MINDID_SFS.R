@@ -13,7 +13,7 @@ MINDID_SFS <- function(P, scaleQ, j=2) {
     r <- 1/nQ
     Q_ni[[index]] <- floor(P/r)[,list(count=.N),by=grp_cols]$count
     if (max(Q_ni[[index]])<= (j-1)) {
-      stop('m is too large or there are not enough points.')
+      stop('m is too large or there are not enough points')
     }
     Q_nbr[index] <- E_P*log(nQ)
     index <- index-1

@@ -48,7 +48,7 @@ Executes the MBFR algorithm for supervised feature selection.
  of grid cells and \eqn{E} is the number of variables (or features).
  \item \eqn{\ell^{-1}}{l^(-1)} is directly related to \eqn{\delta}{delta} (see References).
  \item \eqn{\delta}{delta} is the diagonal length of the grid cells.
- \item The values of \eqn{\ell^{-1}}{l^(-1)} in \code{ScaleQ} must be chosen according to the linear
+ \item The values of \eqn{\ell^{-1}}{l^(-1)} in \code{scaleQ} must be chosen according to the linear
  part of the \eqn{\log}{log}-\eqn{\log}{log} plot relating the \eqn{\log}{log} values of the
  multipoint Morisita index to the \eqn{\log}{log} values of \eqn{\delta}{delta} (or,
  equivalently, to the \eqn{\log}{log} values of \eqn{\ell^{-1}}{l^(-1)}) (see \code{logMINDEX}).
@@ -66,8 +66,8 @@ dev.new(width=5, height=4)
 plot(var_perf,type="b",pch=16,lwd=2,xaxt="n",xlab="",ylab="",
      ylim=c(0,1),col="red",panel.first={grid(lwd=1.5)})
 axis(1,1:length(var_order),labels=var_order)
-mtext(1, text = "Added Features (from left to right)", line = 2.5,cex=1)
-mtext(2, text = "Estimated Dissimilarity", line = 2.5,cex=1)
+mtext(1,text = "Added Features (from left to right)",line = 2.5,cex=1)
+mtext(2,text = "Estimated Dissimilarity",line = 2.5,cex=1)
 }
 }
 \references{

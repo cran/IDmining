@@ -51,22 +51,22 @@
 logMINDEX <- function(X, scaleQ=1:5, mMin=2, mMax=2) {
 
   if (!is.matrix(X) & !is.data.frame(X) & !is.data.table(X)) {
-    stop('X must be a matrix, a data.frame or a data.table.')
+    stop('X must be a matrix, a data.frame or a data.table')
   }
   if (nrow(X)<2){
-    stop('At least two data points must be passed on to the function.')
+    stop('at least two data points must be passed on to the function')
   }
   if (any(apply(X, 2, var, na.rm=TRUE) == 0)) {
-    stop('Constant variables/features must be removed.')
+    stop('constant variables/features must be removed')
   }
   if (!is.numeric(scaleQ) | any(scaleQ<1) | any(scaleQ%%1!=0)) {
     stop('scaleQ must be an integer or a vector of integers equal to or
-         greater than 1.')
+         greater than 1')
   }
   if (length(mMin)!=1 | length(mMax)!=1 | mMin<2 | mMax<2 | mMin%%1!=0 |
       mMax%%1!=0 | mMin>mMax) {
     stop('mMin and mMax must be integers equal to or greater than 2 and
-          mMax must be equal to or greater than mMin.')
+          mMax must be equal to or greater than mMin')
   }
 
   P <- as.data.table(apply(X, MARGIN = 2,
@@ -87,7 +87,7 @@ logMINDEX <- function(X, scaleQ=1:5, mMin=2, mMax=2) {
     r <- 1/nQ
     Q_ni[[index]] <- floor(P/r)[,list(count=.N),by=grp_cols]$count
     if (max(Q_ni[[index]])<= (mMax-1)) {
-      stop('mMax is too large or there are not enough points.')
+      stop('mMax is too large or there are not enough points')
     }
     Q_nbr[index] <- E*log(nQ)
     index <- index-1

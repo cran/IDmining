@@ -1,18 +1,18 @@
 #' Renyi's Generalized Dimensions
 #'
-#' Estimates Rényi's generalized dimensions (or Rényi's dimensions of \eqn{q^{th}}{qth} order). It is
+#' Estimates Rényi's generalized dimensions (or Rényi's dimensions of \eqn{qth}{qth} order). It is
 #' mainly for \eqn{q=2}{q=2} that the result is used as an estimate of the intrinsic dimension of data.
 #' @usage RenDim(X, scaleQ=1:5, qMin=2, qMax=2)
 #' @param X A \eqn{N \times E}{N x E} \code{matrix}, \code{data.frame} or \code{data.table} where \eqn{N} is the number
 #' of data points and \eqn{E} is the number of variables (or features). Each variable
 #' is rescaled to the \eqn{[0,1]} interval by the function.
-#' @param scaleQ  Either a single value or a vector. It contains the value(s) of \eqn{\ell^{-1}}{l^(-1)}
+#' @param scaleQ A vector (at least two values). It contains the values of \eqn{\ell^{-1}}{l^(-1)}
 #' chosen by the user (by default: \code{scaleQ = 1:5}).
 #' @param qMin The minimum value of \eqn{q} (by default: \code{qMin = 2}).
 #' @param qMax The maximum value of \eqn{q} (by default: \code{qMax = 2}).
 #' @return A list of two elements:
 #'  \enumerate{
-#'   \item a \code{data.frame} containing the value of Rényi's information of \eqn{q^{th}}{qth} order
+#'   \item a \code{data.frame} containing the value of Rényi's information of \eqn{qth}{qth} order
 #'   (computed using the natural logarithm) for each value of \eqn{\ln (\delta)}{ln(delta)}
 #'   and \eqn{q}. The values of \eqn{\ln (\delta)}{ln(delta)} are provided with regard to the \eqn{[0,1]} interval.
 #'   \item a \code{data.frame} containing the value of \eqn{D_q}{Dq} for each value of \eqn{q}.
@@ -41,7 +41,6 @@
 #' \href{http://link.springer.com/article/10.1007/s10618-006-0056-4}{Data Mining and
 #' Knowledge Discovery 14(3):367-407}.
 #'
-#'
 #' J. Golay and M. Kanevski (2015). A new estimator of intrinsic dimension
 #' based on the multipoint Morisita index,
 #' \href{http://www.sciencedirect.com/science/article/pii/S0031320315002320}{Pattern Recognition 48 (12):4070–4081}.
@@ -63,19 +62,19 @@
 RenDim <- function(X, scaleQ=1:5, qMin=2, qMax=2) {
 
   if (!is.matrix(X) & !is.data.frame(X) & !is.data.table(X)) {
-    stop('X must be a matrix, a data.frame or a data.table.')
+    stop('X must be a matrix, a data.frame or a data.table')
   }
   if (nrow(X)<2){
-    stop('At least two data points must be passed on to the function.')
+    stop('at least two data points must be passed on to the function')
   }
   if (any(apply(X, 2, var, na.rm=TRUE) == 0)) {
-    stop('Constant variables/features must be removed.')
+    stop('constant variables/features must be removed')
   }
   if (!is.numeric(scaleQ) | length(scaleQ)<=1) {
-    stop('scaleQ must be a vector containing integers equal to or greater than 1.')
+    stop('scaleQ must be a vector containing integers equal to or greater than 1')
   }
   if (length(qMin)!=1 | length(qMax)!=1) {
-    stop('mMin and mMax must be real numbers.')
+    stop('mMin and mMax must be real numbers')
   }
 
   P  <- as.data.table(apply(X, MARGIN = 2,

@@ -35,7 +35,7 @@
 #'  of grid cells and \eqn{E} is the number of variables (or features).
 #'  \item \eqn{\ell^{-1}}{l^(-1)} is directly related to \eqn{\delta}{delta} (see References).
 #'  \item \eqn{\delta}{delta} is the diagonal length of the grid cells.
-#'  \item The values of \eqn{\ell^{-1}}{l^(-1)} in \code{ScaleQ} must be chosen according to the linear
+#'  \item The values of \eqn{\ell^{-1}}{l^(-1)} in \code{scaleQ} must be chosen according to the linear
 #'  part of the \eqn{\log}{log}-\eqn{\log}{log} plot relating the \eqn{\log}{log} values of the
 #'  multipoint Morisita index to the \eqn{\log}{log} values of \eqn{\delta}{delta} (or,
 #'  equivalently, to the \eqn{\log}{log} values of \eqn{\ell^{-1}}{l^(-1)}) (see \code{logMINDEX}).
@@ -62,8 +62,8 @@
 #' plot(var_perf,type="b",pch=16,lwd=2,xaxt="n",xlab="",ylab="",
 #'      ylim=c(0,1),col="red",panel.first={grid(lwd=1.5)})
 #' axis(1,1:length(var_order),labels=var_order)
-#' mtext(1, text = "Added Features (from left to right)", line = 2.5,cex=1)
-#' mtext(2, text = "Estimated Dissimilarity", line = 2.5,cex=1)
+#' mtext(1,text = "Added Features (from left to right)",line = 2.5,cex=1)
+#' mtext(2,text = "Estimated Dissimilarity",line = 2.5,cex=1)
 #' }
 #' @import data.table
 #' @importFrom stats var lm coef
@@ -72,24 +72,24 @@
 MBFR <- function(XY, scaleQ, m=2, C=NULL) {
 
   if (!is.matrix(XY) & !is.data.frame(XY) & !is.data.table(XY)) {
-    stop('XY must be a matrix, a data.frame or a data.table.')
+    stop('XY must be a matrix, a data.frame or a data.table')
   }
   if (nrow(XY)<2){
-    stop('At least two data points must be passed on to the function.')
+    stop('at least two data points must be passed on to the function')
   }
   if (any(apply(XY, 2, var, na.rm=TRUE) == 0)) {
-    stop('Constant variables/features must be removed. They are not informative.')
+    stop('constant variables/features must be removed (they are not informative)')
   }
   if (!is.numeric(scaleQ) | length(scaleQ)<=1 | any(scaleQ<1) | any(scaleQ%%1!=0)) {
-    stop('scaleQ must be a vector containing integers equal to or greater than 1.')
+    stop('scaleQ must be a vector containing integers equal to or greater than 1')
   }
   if (length(m)!=1  | m<2 | m%%1!=0) {
-    stop('m must be an integer equal to or greater than 2.')
+    stop('m must be an integer equal to or greater than 2')
   }
   if (is.null(C)) {
      C <- ncol(XY)-1
   } else if (length(C)!=1  | C<1 | C > ncol(XY)-1 | C%%1!=0) {
-     stop('C must be an integer between 1 and the number of input variables.')
+     stop('C must be an integer between 1 and the number of input variables')
   }
 
   X <- as.data.table(apply(XY, MARGIN = 2,

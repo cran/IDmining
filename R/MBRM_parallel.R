@@ -34,7 +34,7 @@
 #'  of grid cells and \eqn{E} is the number of variables (or features).
 #'  \item \eqn{\ell^{-1}}{l^(-1)} is directly related to \eqn{\delta}{delta} (see References).
 #'  \item \eqn{\delta}{delta} is the diagonal length of the grid cells.
-#'  \item The values of \eqn{\ell^{-1}}{l^(-1)} in \code{ScaleQ} must be chosen according to the linear
+#'  \item The values of \eqn{\ell^{-1}}{l^(-1)} in \code{scaleQ} must be chosen according to the linear
 #'  part of the \eqn{\log}{log}-\eqn{\log}{log} plot relating the \eqn{\log}{log} values of the
 #'  multipoint Morisita index to the \eqn{\log}{log} values of \eqn{\delta}{delta} (or,
 #'  equivalently, to the \eqn{\log}{log} values of \eqn{\ell^{-1}}{l^(-1)}) (see \code{logMINDEX}).
@@ -60,8 +60,9 @@
 #' system.time(MBRM_parallel(bf_large[,-9], 5:25))
 #' }
 #' @references
-#' J. Golay and M. Kanevski (2016). Unsupervised Feature Selection Based on the
-#' Morisita Estimator of Intrinsic Dimension, \href{https://arxiv.org/abs/1608.05581}{arXiv:1608.05581}.
+#' J. Golay and M. Kanevski (2017). Unsupervised feature selection based on the
+#' Morisita estimator of intrinsic dimension,
+#' \href{http://www.sciencedirect.com/science/article/pii/S0950705117303659}{Knowledge-Based Systems 135:125-134}.
 #' @import data.table
 #' @importFrom stats var lm coef
 #' @importFrom utils setTxtProgressBar txtProgressBar
@@ -69,24 +70,24 @@
 MBRM_parallel <- function(X, scaleQ, m=2, C=NULL, ID_tot=NULL, ncores=4) {
 
   if (!is.matrix(X) & !is.data.frame(X) & !is.data.table(X)) {
-    stop('X must be a matrix, a data.frame or a data.table.')
+    stop('X must be a matrix, a data.frame or a data.table')
   }
   if (nrow(X)<2){
-    stop('At least two data points must be passed on to the function.')
+    stop('at least two data points must be passed on to the function')
   }
   if (any(apply(X, 2, var, na.rm=TRUE) == 0)) {
-    stop('Constant variables/features must be removed. They are not informative.')
+    stop('constant variables/features must be removed (they are not informative)')
   }
   if (!is.numeric(scaleQ) | length(scaleQ)<=1 | any(scaleQ<1) | any(scaleQ%%1!=0)) {
-    stop('scaleQ must be a vector containing integers equal to or greater than 1.')
+    stop('scaleQ must be a vector containing integers equal to or greater than 1')
   }
   if (length(m)!=1  | m<2 | m%%1!=0) {
-    stop('m must be an integer equal to or greater than 2.')
+    stop('m must be an integer equal to or greater than 2')
   }
   if (is.null(C)) {
     C <- ncol(X)
   } else if (length(C)!=1  | C<1 | C > ncol(X) | C%%1!=0) {
-    stop('C must be an integer between 1 and ncol(X).')
+    stop('C must be an integer between 1 and ncol(X)')
   }
 
   P <- as.data.table(apply(X, MARGIN = 2,
@@ -98,15 +99,15 @@ MBRM_parallel <- function(X, scaleQ, m=2, C=NULL, ID_tot=NULL, ncores=4) {
   if (is.null(ID_tot)) {
     ID_tot <- round(MINDID_SFS(P, scaleQ, m),2)
   } else if (length(ID_tot)!=1 | ID_tot<0) {
-    stop('ID_tot must be a non-negative real number.')
+    stop('ID_tot must be a non-negative real number')
   }
 
   var_name  <- colnames(P)
   var_order <- vector("character",C)
   mod_perf  <- vector("numeric",C)
   slct      <- c()
-  tst       <- c(1:ncol(P))
-  j            <- NULL
+  tst       <- 1:ncol(P)
+  j         <- NULL
 
   cl <- makeCluster(ncores)
   registerDoParallel(cl)

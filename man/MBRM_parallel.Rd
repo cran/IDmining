@@ -49,7 +49,7 @@ Executes the MBRM algorithm for unsupervised feature selection (CPU parallel com
  of grid cells and \eqn{E} is the number of variables (or features).
  \item \eqn{\ell^{-1}}{l^(-1)} is directly related to \eqn{\delta}{delta} (see References).
  \item \eqn{\delta}{delta} is the diagonal length of the grid cells.
- \item The values of \eqn{\ell^{-1}}{l^(-1)} in \code{ScaleQ} must be chosen according to the linear
+ \item The values of \eqn{\ell^{-1}}{l^(-1)} in \code{scaleQ} must be chosen according to the linear
  part of the \eqn{\log}{log}-\eqn{\log}{log} plot relating the \eqn{\log}{log} values of the
  multipoint Morisita index to the \eqn{\log}{log} values of \eqn{\delta}{delta} (or,
  equivalently, to the \eqn{\log}{log} values of \eqn{\ell^{-1}}{l^(-1)}) (see \code{logMINDEX}).
@@ -76,8 +76,9 @@ system.time(MBRM_parallel(bf_large[,-9], 5:25))
 }
 }
 \references{
-J. Golay and M. Kanevski (2016). Unsupervised Feature Selection Based on the
-Morisita Estimator of Intrinsic Dimension, \href{https://arxiv.org/abs/1608.05581}{arXiv:1608.05581}.
+J. Golay and M. Kanevski (2017). Unsupervised feature selection based on the
+Morisita estimator of intrinsic dimension,
+\href{http://www.sciencedirect.com/science/article/pii/S0950705117303659}{Knowledge-Based Systems 135:125-134}.
 }
 \author{
 Jean Golay \email{Jean.Golay@unil.ch}

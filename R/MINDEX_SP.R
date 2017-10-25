@@ -81,33 +81,33 @@
 MINDEX_SP <- function(X, scaleQ=1:5, mMin=2, mMax=5, Wlim_x=NULL, Wlim_y=NULL){
 
   if (!is.matrix(X) & !is.data.frame(X) & !is.data.table(X) | ncol(X)!=2) {
-    stop('X must be a matrix, a data.frame or a data.table with two columns.')
+    stop('X must be a matrix, a data.frame or a data.table with two columns')
   }
   if (ncol(X)!=2 | nrow(X)<2){
-    stop('The X and Y coordinates must be passed on to the function (no more
-          no less) with at least two data points.')
+    stop('the X and Y coordinates must be passed on to the function (no more
+          no less) with at least two data points')
   }
   if (any(apply(X, 2, var, na.rm=TRUE) == 0)) {
-    stop('The X and/or Y coordinates must not be constant.')
+    stop('the X and/or Y coordinates must not be constant')
   }
   if (!is.numeric(scaleQ) | any(scaleQ<1) | any(scaleQ%%1!=0)) {
     stop('scaleQ must be an integer or a vector of integers equal to or
-         greater than 1.')
+         greater than 1')
   }
   if (length(mMin)!=1 | length(mMax)!=1 | mMin<2 | mMax<2 | mMin%%1!=0 |
       mMax%%1!=0 | mMin>mMax) {
     stop('mMin and mMax must be integers equal to or greater than 2 and
-          mMax must be equal to or greater than mMin.')
+          mMax must be equal to or greater than mMin')
   }
   if (is.null(Wlim_x)) {
      Wlim_x <- range(X[,1])
   } else if (!is.numeric(Wlim_x) | length(Wlim_x)!=2 | diff(Wlim_x)<=0){
-     stop('The spatial extent of the grid is not set correctly.')
+     stop('the spatial extent of the grid is not set correctly.')
   }
   if (is.null(Wlim_y)) {
      Wlim_y <- range(X[,2])
   } else if (!is.numeric(Wlim_y) | length(Wlim_y)!=2 | diff(Wlim_y)<=0){
-     stop('The spatial extent of the grid is not set correctly.')
+     stop('the spatial extent of the grid is not set correctly')
   }
 
   VD <- cbind(Wlim_x,Wlim_y) # set the extent of the grid
@@ -117,7 +117,7 @@ MINDEX_SP <- function(X, scaleQ=1:5, mMin=2, mMax=5, Wlim_x=NULL, Wlim_y=NULL){
               X[,1]<VD[1,1]| # do not fall into the grid
               X[,2]<VD[1,2]) #
 
-  if (length(id)==nrow(X)){stop('No data points fall into the grid.')}
+  if (length(id)==nrow(X)){stop('no data points fall into the grid')}
 
   if (length(id)>0) {
     X_VD<-rbind(matrix(as.numeric(unlist(X[-id,])),
@@ -149,7 +149,7 @@ MINDEX_SP <- function(X, scaleQ=1:5, mMin=2, mMax=5, Wlim_x=NULL, Wlim_y=NULL){
     r <- 1/nQ
     Q_ni[[index]] <- floor(P/r)[,list(count=.N),by=grp_cols]$count
     if (max(Q_ni[[index]])<= (mMax-1)) {
-      stop('mMax is too large or there are not enough points.')
+      stop('mMax is too large or there are not enough points')
     }
     Q_nbr[index] <- nQ^E  # number of quadrats for each scale
     index <- index-1

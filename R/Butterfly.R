@@ -28,7 +28,7 @@
 #' @export
 Butterfly <- function(N=10000) {
 
-  if (N<=0) {stop('Invalid argument.')}
+  if (N<=0) {stop('invalid argument')}
 
   inpweight <- matrix(c(0.6655,1.2611,0.3961,-1.7065,0.8807,1.8260,1.3400,
                         1.2919,-1.3902,0.0743,0.8939,-0.3512,-1.7827,-0.5297,
@@ -56,7 +56,8 @@ Butterfly <- function(N=10000) {
   J3 <- log(x_core[,1]+5,10)
   J4 <- x_core[,1]^2-x_core[,2]^2
   J5 <- x_core[,1]^4+x_core[,2]^4
-
+  # This is the correct version of J5 that is used in our research and papers
+  # (i.e. an addition, not a subtraction).
   cst_2 <-0
   while(cst_2 == 0){
     I6 <- matrix(runif(N,-5,5),N,1)

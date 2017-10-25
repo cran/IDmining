@@ -12,7 +12,7 @@
 #' @export
 SwissRoll <- function(N=10000) {
 
-  if (N<=0) {stop('Invalid argument.')}
+  if (N<=0) {stop('invalid argument')}
 
   x1 <- runif(N,min=-1,max=1)
   x2 <- runif(N,min=-1,max=1)

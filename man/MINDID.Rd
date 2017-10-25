@@ -11,7 +11,7 @@ MINDID(X, scaleQ=1:5, mMin=2, mMax=2)
 of data points and \eqn{E} is the number of variables (or features). Each variable
 is rescaled to the \eqn{[0,1]} interval by the function.}
 
-\item{scaleQ}{Either a single value or a vector. It contains the value(s) of \eqn{\ell^{-1}}{l^(-1)}
+\item{scaleQ}{A vector (at least two values). It contains the values of \eqn{\ell^{-1}}{l^(-1)}
 chosen by the user (by default: \code{scaleQ = 1:5}).}
 
 \item{mMin}{The minimum value of \eqn{m} (by default: \code{mMin = 2}).}
@@ -60,8 +60,9 @@ J. Golay, M. Leuenberger and M. Kanevski (2017). Feature selection for regressio
 on the Morisita estimator of intrinsic dimension,
 \href{http://www.sciencedirect.com/science/article/pii/S0031320317301905}{Pattern Recognition 70:126–138}.
 
-J. Golay and M. Kanevski (2016). Unsupervised Feature Selection Based on the Morisita Estimator
-of Intrinsic Dimension, \href{https://arxiv.org/abs/1608.05581}{arXiv:1608.05581}.
+J. Golay and M. Kanevski (2017). Unsupervised feature selection based on the
+Morisita estimator of intrinsic dimension,
+\href{http://www.sciencedirect.com/science/article/pii/S0950705117303659}{Knowledge-Based Systems 135:125-134}.
 
 J. Golay, M. Leuenberger and M. Kanevski (2015).
 \href{https://www.elen.ucl.ac.be/Proceedings/esann/esannpdf/es2015-41.pdf}{Morisita-based feature selection for regression problems}.

@@ -11,7 +11,7 @@ RenDim(X, scaleQ=1:5, qMin=2, qMax=2)
 of data points and \eqn{E} is the number of variables (or features). Each variable
 is rescaled to the \eqn{[0,1]} interval by the function.}
 
-\item{scaleQ}{Either a single value or a vector. It contains the value(s) of \eqn{\ell^{-1}}{l^(-1)}
+\item{scaleQ}{A vector (at least two values). It contains the values of \eqn{\ell^{-1}}{l^(-1)}
 chosen by the user (by default: \code{scaleQ = 1:5}).}
 
 \item{qMin}{The minimum value of \eqn{q} (by default: \code{qMin = 2}).}
@@ -21,14 +21,14 @@ chosen by the user (by default: \code{scaleQ = 1:5}).}
 \value{
 A list of two elements:
  \enumerate{
-  \item a \code{data.frame} containing the value of Rényi's information of \eqn{q^{th}}{qth} order
+  \item a \code{data.frame} containing the value of Rényi's information of \eqn{qth}{qth} order
   (computed using the natural logarithm) for each value of \eqn{\ln (\delta)}{ln(delta)}
   and \eqn{q}. The values of \eqn{\ln (\delta)}{ln(delta)} are provided with regard to the \eqn{[0,1]} interval.
   \item a \code{data.frame} containing the value of \eqn{D_q}{Dq} for each value of \eqn{q}.
 }
 }
 \description{
-Estimates Rényi's generalized dimensions (or Rényi's dimensions of \eqn{q^{th}}{qth} order). It is
+Estimates Rényi's generalized dimensions (or Rényi's dimensions of \eqn{qth}{qth} order). It is
 mainly for \eqn{q=2}{q=2} that the result is used as an estimate of the intrinsic dimension of data.
 }
 \details{
@@ -63,7 +63,6 @@ E. P. M. De Sousa, C. Traina Jr., A. J. M. Traina, L. Wu and C. Faloutsos (2007)
 effective method to find correlations among attributes in databases,
 \href{http://link.springer.com/article/10.1007/s10618-006-0056-4}{Data Mining and
 Knowledge Discovery 14(3):367-407}.
-
 
 J. Golay and M. Kanevski (2015). A new estimator of intrinsic dimension
 based on the multipoint Morisita index,

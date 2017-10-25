@@ -7,8 +7,9 @@
 #' on the Morisita estimator of intrinsic dimension,
 #' \href{http://www.sciencedirect.com/science/article/pii/S0031320317301905}{Pattern Recognition 70:126–138}.
 #'
-#' J. Golay and M. Kanevski (2016). Unsupervised Feature Selection Based on the Morisita Estimator
-#' of Intrinsic Dimension, \href{https://arxiv.org/abs/1608.05581}{arXiv:1608.05581}.
+#' J. Golay and M. Kanevski (2017). Unsupervised feature selection based on the
+#' Morisita estimator of intrinsic dimension,
+#' \href{http://www.sciencedirect.com/science/article/pii/S0950705117303659}{Knowledge-Based Systems 135:125-134}.
 #'
 #' J. Golay, M. Leuenberger and M. Kanevski (2015).
 #' \href{https://www.elen.ucl.ac.be/Proceedings/esann/esannpdf/es2015-41.pdf}{Morisita-based feature selection for regression problems}.

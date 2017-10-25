@@ -5,7 +5,7 @@
 #' @param X A \eqn{N \times E}{N x E} \code{matrix}, \code{data.frame} or \code{data.table} where \eqn{N} is the number
 #' of data points and \eqn{E} is the number of variables (or features). Each variable
 #' is rescaled to the \eqn{[0,1]} interval by the function.
-#' @param scaleQ  Either a single value or a vector. It contains the value(s) of \eqn{\ell^{-1}}{l^(-1)}
+#' @param scaleQ A vector (at least two values). It contains the values of \eqn{\ell^{-1}}{l^(-1)}
 #' chosen by the user (by default: \code{scaleQ = 1:5}).
 #' @param mMin The minimum value of \eqn{m} (by default: \code{mMin = 2}).
 #' @param mMax The maximum value of \eqn{m} (by default: \code{mMax = 2}).
@@ -37,8 +37,9 @@
 #' on the Morisita estimator of intrinsic dimension,
 #' \href{http://www.sciencedirect.com/science/article/pii/S0031320317301905}{Pattern Recognition 70:126–138}.
 #'
-#' J. Golay and M. Kanevski (2016). Unsupervised Feature Selection Based on the Morisita Estimator
-#' of Intrinsic Dimension, \href{https://arxiv.org/abs/1608.05581}{arXiv:1608.05581}.
+#' J. Golay and M. Kanevski (2017). Unsupervised feature selection based on the
+#' Morisita estimator of intrinsic dimension,
+#' \href{http://www.sciencedirect.com/science/article/pii/S0950705117303659}{Knowledge-Based Systems 135:125-134}.
 #'
 #' J. Golay, M. Leuenberger and M. Kanevski (2015).
 #' \href{https://www.elen.ucl.ac.be/Proceedings/esann/esannpdf/es2015-41.pdf}{Morisita-based feature selection for regression problems}.
@@ -58,21 +59,21 @@
 MINDID <- function(X, scaleQ=1:5, mMin=2, mMax=2) {
 
   if (!is.matrix(X) & !is.data.frame(X) & !is.data.table(X)) {
-    stop('X must be a matrix, a data.frame or a data.table.')
+    stop('X must be a matrix, a data.frame or a data.table')
   }
   if (nrow(X)<2){
-    stop('At least two data points must be passed on to the function.')
+    stop('at least two data points must be passed on to the function')
   }
   if (any(apply(X, 2, var, na.rm=TRUE) == 0)) {
-    stop('Constant variables/features must be removed.')
+    stop('constant variables/features must be removed')
   }
   if (!is.numeric(scaleQ) | length(scaleQ)<=1 | any(scaleQ<1) | any(scaleQ%%1!=0)) {
-    stop('scaleQ must be a vector containing integers equal to or greater than 1.')
+    stop('scaleQ must be a vector containing integers equal to or greater than 1')
   }
   if (length(mMin)!=1 | length(mMax)!=1 | mMin<2 | mMax<2 | mMin%%1!=0 |
       mMax%%1!=0 | mMin>mMax) {
     stop('mMin and mMax must be integers equal to or greater than 2 and
-          mMax must be equal to or greater than mMin.')
+          mMax must be equal to or greater than mMin')
   }
 
   P  <- as.data.table(apply(X, MARGIN = 2,
@@ -93,7 +94,7 @@ MINDID <- function(X, scaleQ=1:5, mMin=2, mMax=2) {
     r <- 1/nQ
     Q_ni[[index]] <- floor(P/r)[,list(count=.N),by=grp_cols]$count
     if (max(Q_ni[[index]])<= (mMax-1)) {
-      stop('mMax is too large or there are not enough points.')
+      stop('mMax is too large or there are not enough points')
     }
     Q_nbr[index] <- E*log(nQ)
     index <- index-1
