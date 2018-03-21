@@ -12,7 +12,7 @@
 #' @param scaleQ A vector containing the values of \eqn{\ell^{-1}}{l^(-1)}
 #' chosen by the user (see Details).
 #' @param m The value of the parameter m (by default: \code{m=2}).
-#' @param thd Either a single value or a vector. It contains the value(s) of the thresholds.
+#' @param thd Either a single value or a vector. It contains the value(s) of the threshold(s).
 #' @return A \code{vector} containing the value(s) of the m-Morisita slope, \eqn{S_m}{Sm}, for each
 #' threshold value.
 #' @details
@@ -63,7 +63,7 @@
 #'         ylim=c(-0.05,0.05),ylab=bquote(S[.(m)]),xaxt="n",
 #'         xlab="",cex.lab=1.2)
 #' axis(1,1:10,labels = FALSE)
-#' text(1:10,par("usr")[3.25]-0.01,srt=45,ad=1,
+#' text(1:10,par("usr")[3]-0.01,srt=45,ad=1,
 #'      labels=c("0_100", "10_100","20_100","30_100",
 #'               "40_100","50_100","60_100",
 #'               "70_100","80_100","90_100"),xpd=T,font=2,cex=1)
@@ -100,7 +100,7 @@ MINDID_FMC <- function(XY, scaleQ, m=2, thd){
     stop('m must be an integer equal to or greater than 2')
   }
   if (!is.numeric(thd)) {
-    stop('scaleQ must be a scalar or a vector of real numbers')
+    stop('thd must be a scalar or a vector of real numbers')
   }
 
   XY_sc  <- as.data.table(cbind(apply(XY[,1:(ncol(XY)-1)],
