@@ -8,7 +8,7 @@
 \description{
 Contains techniques for mining large and high-dimensional data
 sets by using the concept of Intrinsic Dimension (ID). Here the ID is
-not necessarily integer. It is extended to fractal dimensions. And
+not necessarily an integer. It is extended to fractal dimensions. And
 the Morisita estimator is used for the ID estimation, but other
 tools are included as well.
 }
