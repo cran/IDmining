@@ -94,5 +94,5 @@ L. Telesca, J. Golay and M. Kanevski (2015). Morisita-based space-clustering ana
 \href{http://www.sciencedirect.com/science/article/pii/S0378437114008425}{Physica A 419:40–47}.
 }
 \author{
-Jean Golay \email{Jean.Golay@unil.ch}
+Jean Golay \email{jeangolay@gmail.com}
 }

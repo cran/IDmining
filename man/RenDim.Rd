@@ -73,5 +73,5 @@ dimensions of fractals and strange attractors,
 \href{http://www.sciencedirect.com/science/article/pii/016727898390235X}{Physica D 8(3):435-444}.
 }
 \author{
-Jean Golay \email{Jean.Golay@unil.ch}
+Jean Golay \email{jeangolay@gmail.com}
 }
